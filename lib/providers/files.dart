@@ -18,24 +18,44 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
 
   void initState() async {
     final directoryPath = await getApplicationDocumentsDirectory();
-    final newDirectory = Directory('${directoryPath.path}/example_directory');
+    // final newDirectory = Directory('${directoryPath.path}/example_directory');
+    const normalDirectory = 'normal_files';
+    const favouritesDirectory = 'favourite_files';
+    final nDirectory = Directory('${directoryPath.path}/$normalDirectory');
+    final fDirectory = Directory('${directoryPath.path}/$favouritesDirectory');
 
     state = [];
 
-    // Create the new directory if it does not exist
-    if (!await newDirectory.exists()) {
-      await newDirectory.create(recursive: true);
+    if (!await nDirectory.exists()) {
+      await nDirectory.create(recursive: true);
+    }
+    if (!await fDirectory.exists()) {
+      await fDirectory.create(recursive: true);
     }
 
     await for (var entity
-        in newDirectory.list(recursive: false, followLinks: false)) {
+        in nDirectory.list(recursive: false, followLinks: false)) {
       if (entity is File) {
+        print(entity.path);
         FileObject f = FileObject(
           fileName: entity.uri.pathSegments.last,
           filePath: entity.path,
           date: formatter.format(FileStat.statSync(entity.path).modified),
         );
-        state = [...state, f];
+        state = [f, ...state];
+      }
+    }
+    print("-----");
+    await for (var entity
+        in fDirectory.list(recursive: false, followLinks: false)) {
+      if (entity is File) {
+        print(entity.path);
+        FileObject f = FileObject(
+          fileName: entity.uri.pathSegments.last,
+          filePath: entity.path,
+          date: formatter.format(FileStat.statSync(entity.path).modified),
+        );
+        state = [f, ...state];
       }
     }
   }
@@ -62,7 +82,7 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
 
   Future<void> writeDoc({textString, fileName}) async {
     final directoryPath = await getApplicationDocumentsDirectory();
-    final newDirectory = Directory('${directoryPath.path}/example_directory');
+    final newDirectory = Directory('${directoryPath.path}/normal_files');
     File f = File('${newDirectory.path}/$fileName.pdf');
 
     final PdfDocument document = PdfDocument();

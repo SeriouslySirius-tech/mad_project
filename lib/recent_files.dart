@@ -4,6 +4,7 @@ import 'package:mad_project/file_display.dart';
 import 'package:mad_project/models/file_object.dart';
 import 'package:mad_project/providers/favourite_docs_provider.dart';
 import 'dart:io';
+import 'package:mad_project/providers/files.dart';
 
 class RecentFiles extends ConsumerWidget {
   final FileObject file;
@@ -15,7 +16,6 @@ class RecentFiles extends ConsumerWidget {
     return InkWell(
       onTap: () {
         try {
-          print(file.fileName);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (ctx) => FileDisplayWidget(file: File(file.filePath))));
         } catch (error) {

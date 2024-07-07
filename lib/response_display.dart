@@ -70,7 +70,7 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer)),
               onPressed: () {
-                fileName = _controller.text;
+                fileName = _controller.text.trim();
                 _controller.clear();
                 // Close the dialog
                 Navigator.of(context).pop();

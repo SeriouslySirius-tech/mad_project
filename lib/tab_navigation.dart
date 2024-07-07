@@ -32,7 +32,7 @@ class _TabNavigationState extends ConsumerState<TabNavigation> {
     var activePageTitle = "Recent Notes";
 
     if (currentIndex == 1) {
-      activePage = FavouritesPage(files: favouriteFiles);
+      activePage = FavouritesPage(favFiles: favouriteFiles);
       activePageTitle = "Favourites";
     }
     return Scaffold(

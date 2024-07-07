@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mad_project/providers/favourite_docs_provider.dart';
 import 'package:mad_project/providers/files.dart';
 import 'package:mad_project/models/file_object.dart';
 import 'package:mad_project/recent_files.dart';
@@ -20,9 +21,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final widget.files = ref.watch(filesProvider);
+    final files = ref.watch(filesProvider);
     PdfDocument? pdfDocument;
-    if (widget.files.isEmpty) {
+    if (files.isEmpty) {
       return Center(
           child: Text(
         "Add some files here!",
@@ -32,16 +33,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
       ));
     }
+
     return Scaffold(
       body: ListView.builder(
-        itemCount: widget.files.length,
+        itemCount: files.length,
         itemBuilder: (context, index) {
           return Dismissible(
-            key: ValueKey(widget.files[index].fileName),
+            key: ValueKey(files[index].fileName),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
               if (direction == DismissDirection.endToStart) {
-                final deletedDoc = widget.files[index];
+                final deletedDoc = files[index];
                 setState(() {
                   deletedFilePath = deletedDoc.filePath;
                   File f = File(deletedFilePath!);
@@ -68,7 +70,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               }
             },
             child: RecentFiles(
-              file: widget.files[index],
+              file: files[index],
             ),
           );
         },
