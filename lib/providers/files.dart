@@ -28,28 +28,28 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
     }
 
     // Create some files within the new directory
-    for (int i = 1; i <= 3; i++) {
-      final f = File('${newDirectory.path}/file_$i.pdf');
-      final PdfDocument document = PdfDocument();
+    // for (int i = 1; i <= 3; i++) {
+    //   final f = File('${newDirectory.path}/file_$i.pdf');
+    //   final PdfDocument document = PdfDocument();
 
-      document.pages.add().graphics.drawString(
-          'This is file $i', PdfStandardFont(PdfFontFamily.helvetica, 14),
-          brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-          bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    //   document.pages.add().graphics.drawString(
+    //       'This is file $i', PdfStandardFont(PdfFontFamily.helvetica, 14),
+    //       brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    //       bounds: const Rect.fromLTWH(0, 0, 150, 20));
 
-      // final pdf = pw.Document();
-      // pdf.addPage(
-      //   pw.Page(
-      //     build: (pw.Context context) {
-      //       return pw.Text('This is file $i');
-      //     },
-      //   ),
-      // );
+    //   // final pdf = pw.Document();
+    //   // pdf.addPage(
+    //   //   pw.Page(
+    //   //     build: (pw.Context context) {
+    //   //       return pw.Text('This is file $i');
+    //   //     },
+    //   //   ),
+    //   // );
 
-      await f.writeAsBytes(await document.save());
-      document.dispose();
-      // final uniqueFileName = formatter.format(DateTime.now());
-    }
+    //   await f.writeAsBytes(await document.save());
+    //   document.dispose();
+    //   // final uniqueFileName = formatter.format(DateTime.now());
+    // }
 
     await for (var entity
         in newDirectory.list(recursive: false, followLinks: false)) {
