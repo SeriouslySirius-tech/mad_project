@@ -27,37 +27,13 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
       await newDirectory.create(recursive: true);
     }
 
-    // Create some files within the new directory
-    // for (int i = 1; i <= 3; i++) {
-    //   final f = File('${newDirectory.path}/file_$i.pdf');
-    //   final PdfDocument document = PdfDocument();
-
-    //   document.pages.add().graphics.drawString(
-    //       'This is file $i', PdfStandardFont(PdfFontFamily.helvetica, 14),
-    //       brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-    //       bounds: const Rect.fromLTWH(0, 0, 150, 20));
-
-    //   // final pdf = pw.Document();
-    //   // pdf.addPage(
-    //   //   pw.Page(
-    //   //     build: (pw.Context context) {
-    //   //       return pw.Text('This is file $i');
-    //   //     },
-    //   //   ),
-    //   // );
-
-    //   await f.writeAsBytes(await document.save());
-    //   document.dispose();
-    //   // final uniqueFileName = formatter.format(DateTime.now());
-    // }
-
     await for (var entity
         in newDirectory.list(recursive: false, followLinks: false)) {
       if (entity is File) {
         FileObject f = FileObject(
           fileName: entity.uri.pathSegments.last,
           filePath: entity.path,
-          date: formatter.format(DateTime.now()),
+          date: formatter.format(FileStat.statSync(entity.path).modified),
         );
         state = [...state, f];
       }
@@ -75,11 +51,6 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
     state = [...state]..insert(index, file);
     File f = File(file.filePath);
     final PdfDocument document = contents;
-
-    // document.pages.add().graphics.drawString(
-    //     contents, PdfStandardFont(PdfFontFamily.helvetica, 14),
-    //     brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-    //     bounds: const Rect.fromLTWH(0, 0, 150, 20));
 
     await f.writeAsBytes(await document.save());
     document.dispose();
@@ -108,15 +79,15 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
                 0, 0, page.getClientSize().width, page.getClientSize().height),
             format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate))!;
 
-    page.graphics.drawLine(
-        PdfPen(PdfColor(0, 0, 0)),
-        Offset(0, layoutResult.bounds.bottom + 15),
-        Offset(page.getClientSize().width, layoutResult.bounds.bottom + 10));
+    // page.graphics.drawLine(
+    //     PdfPen(PdfColor(0, 0, 0)),
+    //     Offset(0, layoutResult.bounds.bottom + 15),
+    //     Offset(page.getClientSize().width, layoutResult.bounds.bottom + 10));
 
     f.writeAsBytes(await document.save());
 
     final object = FileObject(
-        fileName: fileName,
+        fileName: f.uri.pathSegments.last,
         filePath: f.path,
         date: formatter.format(DateTime.now()));
     await addDoc(object);

@@ -23,18 +23,14 @@ class FloatingActionPicker extends ConsumerWidget {
     if (pickedImage != null) {
       final file = File(pickedImage.path);
 
-      // Create a unique file name (optional)
       final DateTime date = DateTime.now();
       final uniqueFileName = '${date.toString()}.jpg';
 
-      // Get the documents directory path
       final directory = await getTemporaryDirectory();
       final newPath = File('${directory.path}/$uniqueFileName');
 
-      // Move the captured image to the documents directory with a new name
       await file.copy(newPath.path);
 
-      // You can access the saved image path here
       final savedImagePath = newPath.path;
       final FileObject f = FileObject(
           fileName: uniqueFileName,
@@ -51,10 +47,10 @@ class FloatingActionPicker extends ConsumerWidget {
         ),
       ));
       String textString = await model.generateSummaryforImages();
+      textString = textString.replaceAll('**', '');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (ctx) => ResponseDisplay(textString: textString)));
 
-      // Display a snackbar to indicate successful capture (optional)
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -63,7 +59,6 @@ class FloatingActionPicker extends ConsumerWidget {
         ),
       );
     } else {
-      // Display a snackbar if user cancels or closes the camera (optional)
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           duration: Durations.medium1,
@@ -79,7 +74,7 @@ class FloatingActionPicker extends ConsumerWidget {
     if (images.isNotEmpty) {
       List<FileObject> imageList = [];
       final directory = await getTemporaryDirectory();
-      // Get the application's document directory
+
       for (int i = 0; i < images.length; i++) {
         final DateTime date = DateTime.now();
         final uniqueFileName = '${date.toString()}_${i + 1}.jpeg';
@@ -100,6 +95,7 @@ class FloatingActionPicker extends ConsumerWidget {
         ),
       ));
       String textString = await model.generateSummaryforImageList();
+      textString = textString.replaceAll('**', '');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (ctx) => ResponseDisplay(textString: textString)));
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -138,6 +134,7 @@ class FloatingActionPicker extends ConsumerWidget {
         ),
       ));
       String textString = await model.generateSummaryforText();
+      textString = textString.replaceAll('**', '');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (ctx) => ResponseDisplay(textString: textString)));
       ScaffoldMessenger.of(context).clearSnackBars();

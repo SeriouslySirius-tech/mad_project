@@ -29,8 +29,8 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
     super.dispose();
   }
 
-  Future<String> _showFileNameDialog(BuildContext context) async {
-    String fileName = formatter.format(DateTime.now());
+  Future<String?> _showFileNameDialog(BuildContext context) async {
+    String? fileName;
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -86,7 +86,8 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
   }
 
   void writeFile(context, ref) async {
-    String fileName = await _showFileNameDialog(context);
+    String? fileName = await _showFileNameDialog(context);
+    if (fileName == null) return;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (ctx) => Center(
         child: LoadingAnimationWidget.staggeredDotsWave(
