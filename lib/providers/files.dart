@@ -52,7 +52,7 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
     await for (var entity
         in nDirectory.list(recursive: false, followLinks: false)) {
       if (entity is File) {
-        print(entity.path);
+        // print(entity.path);
         FileObject f = FileObject(
           fileName: entity.uri.pathSegments.last,
           filePath: entity.path,
@@ -61,11 +61,11 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
         state = [f, ...state];
       }
     }
-    print("-----");
+    // print("-----");
     await for (var entity
         in fDirectory.list(recursive: false, followLinks: false)) {
       if (entity is File) {
-        print(entity.path);
+        // print(entity.path);
         FileObject f = FileObject(
           fileName: entity.uri.pathSegments.last,
           filePath: entity.path,

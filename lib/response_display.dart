@@ -82,14 +82,14 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
         );
       },
     );
-    print(fileName);
+
     if (fileName != null) fileName!.trim();
     int countOfFile = (fileName != null)
         ? ref.read(filesProvider.notifier).countDoc(fileName!)
         : 0;
-    print(countOfFile);
+
     if (countOfFile > 0) fileName = '$fileName ($countOfFile)';
-    print(fileName);
+
     return fileName;
   }
 
