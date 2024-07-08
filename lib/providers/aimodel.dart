@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
-const apiKey = "---";
+const apiKey = "AIzaSyAx5PgOrh-LaE1_1iXx9YmCKrOrEem-sLE";
 
 class Model {
   final FileObject? file;
