@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mad_project/models/file_object.dart';
 
 class FavouriteDocsNotifier extends StateNotifier<List<FileObject>> {
-  FavouriteDocsNotifier() : super([]) {
+  final Ref ref;
+  FavouriteDocsNotifier(this.ref) : super([]) {
     initState();
   }
 
@@ -43,16 +44,19 @@ class FavouriteDocsNotifier extends StateNotifier<List<FileObject>> {
       segments[segments.length - 2] = 'normal_files';
       final newPath = segments.join('/');
       File newFile = await File(file.filePath).copy(newPath);
-      await File(file.filePath).delete();
+      await File(file.filePath).delete(recursive: true);
+      // ref.read(filesProvider.notifier).removeDoc(fObj);
+      // ref.read(filesProvider.notifier).addDoc(fObj);
       state = state.where((f) => f.filePath != file.filePath).toList();
-      file.filePath = newPath;
+      ref.read(filesProvider.notifier).initState();
+      // file.filePath = newPath;
       return false;
     } else {
       List<String> segments = [...File(file.filePath).uri.pathSegments];
       segments[segments.length - 2] = 'favourite_files';
       final newPath = segments.join('/');
       File newFile = await File(file.filePath).copy(newPath);
-      await File(file.filePath).delete();
+      await File(file.filePath).delete(recursive: true);
       state = [...state, file];
       file.filePath = newPath;
       return true;
@@ -62,5 +66,5 @@ class FavouriteDocsNotifier extends StateNotifier<List<FileObject>> {
 
 final favouriteDocsProvider =
     StateNotifierProvider<FavouriteDocsNotifier, List<FileObject>>((ref) {
-  return FavouriteDocsNotifier();
+  return FavouriteDocsNotifier(ref);
 });

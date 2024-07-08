@@ -39,6 +39,7 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimaryContainer)),
           content: TextField(
+            cursorColor: Theme.of(context).colorScheme.onPrimaryContainer,
             style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer),
             controller: _controller,
@@ -81,12 +82,20 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
         );
       },
     );
-
+    print(fileName);
+    if (fileName != null) fileName!.trim();
+    int countOfFile = (fileName != null)
+        ? ref.read(filesProvider.notifier).countDoc(fileName!)
+        : 0;
+    print(countOfFile);
+    if (countOfFile > 0) fileName = '$fileName ($countOfFile)';
+    print(fileName);
     return fileName;
   }
 
   void writeFile(context, ref) async {
     String? fileName = await _showFileNameDialog(context);
+    print(fileName);
     if (fileName == null) return;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (ctx) => Center(

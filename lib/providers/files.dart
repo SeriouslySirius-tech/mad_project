@@ -16,6 +16,22 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
     initState();
   }
 
+  int countDoc(String filename) {
+    final Map map = {};
+    final files = [...state];
+    files
+        .map((item) =>
+            item.fileName.substring(0, item.fileName.lastIndexOf('.')))
+        .forEach((element) {
+      if (!map.containsKey(element)) {
+        map[element] = 1;
+      } else {
+        map[element] += 1;
+      }
+    });
+    return map[filename] ?? 0;
+  }
+
   void initState() async {
     final directoryPath = await getApplicationDocumentsDirectory();
     // final newDirectory = Directory('${directoryPath.path}/example_directory');
@@ -62,7 +78,8 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
 
   Future<void> removeDoc(FileObject file) async {
     File f = File(file.filePath);
-    state = state.where((element) => element != file).toList();
+    state =
+        state.where((element) => element.filePath != file.filePath).toList();
     await f.delete(recursive: true);
   }
 
