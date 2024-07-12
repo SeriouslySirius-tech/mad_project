@@ -20,8 +20,12 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
     final Map map = {};
     final files = [...state];
     files
-        .map((item) =>
-            item.fileName.substring(0, item.fileName.lastIndexOf('.')))
+        .map((item) => item.fileName.substring(
+            0,
+            (item.fileName.lastIndexOf('(') < item.fileName.lastIndexOf('.') &&
+                    item.fileName.lastIndexOf('(') != -1)
+                ? item.fileName.lastIndexOf('(')
+                : item.fileName.lastIndexOf('.')))
         .forEach((element) {
       if (!map.containsKey(element)) {
         map[element] = 1;
@@ -29,6 +33,7 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
         map[element] += 1;
       }
     });
+    print(map[filename]);
     return map[filename] ?? 0;
   }
 

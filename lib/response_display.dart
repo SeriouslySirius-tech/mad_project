@@ -88,7 +88,7 @@ class _ResponseDisplayState extends ConsumerState<ResponseDisplay> {
         ? ref.read(filesProvider.notifier).countDoc(fileName!)
         : 0;
 
-    if (countOfFile > 0) fileName = '$fileName ($countOfFile)';
+    if (countOfFile > 0) fileName = '$fileName($countOfFile)';
 
     return fileName;
   }
