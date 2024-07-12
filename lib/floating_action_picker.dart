@@ -21,6 +21,14 @@ class FloatingActionPicker extends ConsumerWidget {
         await imagePicker.pickImage(source: ImageSource.camera);
 
     if (pickedImage != null) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: Colors.white,
+            size: 50,
+          ),
+        ),
+      ));
       final file = File(pickedImage.path);
 
       final DateTime date = DateTime.now();
@@ -38,14 +46,6 @@ class FloatingActionPicker extends ConsumerWidget {
           date: formatter.format(date));
       final model = Model(file: f);
 
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) => Center(
-          child: LoadingAnimationWidget.staggeredDotsWave(
-            color: Colors.white,
-            size: 50,
-          ),
-        ),
-      ));
       String textString = await model.generateSummaryforImages();
       textString = textString.replaceAll('**', '');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -72,6 +72,14 @@ class FloatingActionPicker extends ConsumerWidget {
     final ImagePicker picker = ImagePicker();
     final List<XFile> images = await picker.pickMultiImage();
     if (images.isNotEmpty) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: Colors.white,
+            size: 50,
+          ),
+        ),
+      ));
       List<FileObject> imageList = [];
       final directory = await getTemporaryDirectory();
 
@@ -86,14 +94,7 @@ class FloatingActionPicker extends ConsumerWidget {
             date: formatter.format(date)));
       }
       final model = Model(fileList: imageList);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) => Center(
-          child: LoadingAnimationWidget.staggeredDotsWave(
-            color: Colors.white,
-            size: 50,
-          ),
-        ),
-      ));
+
       String textString = await model.generateSummaryforImageList();
       textString = textString.replaceAll('**', '');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -119,12 +120,6 @@ class FloatingActionPicker extends ConsumerWidget {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      File file = File(result.files.single.path!);
-      FileObject f = FileObject(
-          fileName: file.uri.pathSegments.last,
-          filePath: file.path,
-          date: formatter.format(DateTime.now()));
-      final model = Model(file: f);
       Navigator.of(context).push(MaterialPageRoute(
         builder: (ctx) => Center(
           child: LoadingAnimationWidget.staggeredDotsWave(
@@ -133,6 +128,13 @@ class FloatingActionPicker extends ConsumerWidget {
           ),
         ),
       ));
+      File file = File(result.files.single.path!);
+      FileObject f = FileObject(
+          fileName: file.uri.pathSegments.last,
+          filePath: file.path,
+          date: formatter.format(DateTime.now()));
+      final model = Model(file: f);
+
       String textString = await model.generateSummaryforText();
       textString = textString.replaceAll('**', '');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
