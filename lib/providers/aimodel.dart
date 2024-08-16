@@ -1,10 +1,11 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:mad_project/constants.dart';
 import 'package:mad_project/models/file_object.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
-const apiKey = "---";
+const apiKey = API_KEY;
 
 class Model {
   final FileObject? file;
