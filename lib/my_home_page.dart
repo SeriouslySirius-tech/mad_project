@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mad_project/providers/favourite_docs_provider.dart';
 import 'package:mad_project/providers/files.dart';
 import 'package:mad_project/models/file_object.dart';
 import 'package:mad_project/recent_files.dart';

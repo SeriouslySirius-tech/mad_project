@@ -33,7 +33,6 @@ class FilesNotifier extends StateNotifier<List<FileObject>> {
         map[element] += 1;
       }
     });
-    print(map[filename]);
     return map[filename] ?? 0;
   }
 
